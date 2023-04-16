@@ -1,0 +1,180 @@
+{
+    "_version": "1.44.0",
+    "sap.app": {
+        "id": "KnowledgeHourSession.KnowledgeHoursSessionListFullAccessAdmin",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:lrop",
+            "version": "1.9.3",
+            "toolsId": "de128b6f-9d35-45f3-b00e-a1e950555f75"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/service/KnowledgeHourSession/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "4.0"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "KnowledgeHourSession-KnowledgeHoursSessionListFullAccessAdmin-inbound": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "KnowledgeHourSessionKnowledgeHoursSessionListFullAccessAdmin",
+                    "action": "display",
+                    "title": "{{flpTitle}}",
+                    "subTitle": "{{flpSubtitle}}",
+                    "icon": ""
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.104.2",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ushell": {},
+                "sap.fe.templates": {},
+                "sap.f": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "KnowledgeHourSession.KnowledgeHoursSessionListFullAccessAdmin.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "config": {
+                "flexibleColumnLayout": {
+                    "defaultTwoColumnLayoutType": "TwoColumnsBeginExpanded",
+                    "defaultThreeColumnLayoutType": "ThreeColumnsMidExpanded"
+                },
+                "routerClass": "sap.f.routing.Router"
+            },
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "KnowledgeHourSessionFullAccessList",
+                    "target": [
+                        "KnowledgeHourSessionFullAccessList"
+                    ]
+                },
+                {
+                    "pattern": "KnowledgeHourSessionFullAccess({key}):?query:",
+                    "name": "KnowledgeHourSessionFullAccessObjectPage",
+                    "target": [
+                        "KnowledgeHourSessionFullAccessList",
+                        "KnowledgeHourSessionFullAccessObjectPage"
+                    ]
+                }
+            ],
+            "targets": {
+                "KnowledgeHourSessionFullAccessList": {
+                    "type": "Component",
+                    "id": "KnowledgeHourSessionFullAccessList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "entitySet": "KnowledgeHourSessionFullAccess",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "KnowledgeHourSessionFullAccess": {
+                                    "detail": {
+                                        "route": "KnowledgeHourSessionFullAccessObjectPage"
+                                    }
+                                }
+                            },
+                            "initialLoad": "Enabled"
+                        }
+                    },
+                    "controlAggregation": "beginColumnPages",
+                    "contextPattern": ""
+                },
+                "KnowledgeHourSessionFullAccessObjectPage": {
+                    "type": "Component",
+                    "id": "KnowledgeHourSessionFullAccessObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "KnowledgeHourSessionFullAccess"
+                        }
+                    },
+                    "controlAggregation": "midColumnPages",
+                    "contextPattern": "/KnowledgeHourSessionFullAccess({key})"
+                }
+            }
+        },
+        "extends": {
+            "extensions": {
+                "sap.ui.controllerExtensions": {}
+            }
+        },
+        "rootView": {
+            "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+            "type": "XML",
+            "async": true,
+            "id": "appRootView"
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    }
+}
