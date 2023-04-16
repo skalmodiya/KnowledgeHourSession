@@ -1,0 +1,258 @@
+_schema-version: '3.1'
+ID: KnowledgeHourSession
+version: 1.0.0
+description: A simple CAP project.
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - rm -rf build/ui-deployer
+        - mkdir -p build/ui-deployer
+        - rm -rf build/dist
+        - mkdir -p build/dist
+    - builder: custom
+      commands:
+        - npm install --production
+        - >-
+          bash -c "cds -v | grep 'cds-dk' || npm i --production --no-save
+          @sap/cds-dk @sap/mdk-tools"
+        - bash -c "export PATH=$PATH:$(pwd)/node_modules/.bin"
+        - cds build --production
+modules:
+  - name: >-
+      KnowledgeHourSession-KnowledgeHourSession.KnowledgeHoursSessionListFullAccessAdmin
+    type: html5
+    path: app/KnowledgeHourSession.KnowledgeHoursSessionListFullAccessAdmin
+    build-parameters:
+      builder: custom
+      commands:
+        - rm -rf dist-zip dist
+        - >-
+          npx -p @ui5/cli@^3.0.0 ui5 build --dest dist
+          --include-task=generateManifestBundle
+          --include-task=generateCachebusterInfo
+        - mkdir dist-zip
+        - >-
+          bash -c "cd dist && npx bestzip
+          ../dist-zip/KnowledgeHourSessionKnowledgeHoursSessionListFullAccessAdmin.zip
+          *"
+      _artifactName: KnowledgeHourSessionKnowledgeHoursSessionListFullAccessAdmin.zip
+      supported-platforms: []
+      build-result: dist-zip
+  - name: >-
+      KnowledgeHourSession-KnowledgeHourSession.KnowledgeHoursSessionListReadOnly
+    type: html5
+    path: app/KnowledgeHourSession.KnowledgeHoursSessionListReadOnly
+    build-parameters:
+      builder: custom
+      commands:
+        - rm -rf dist-zip dist
+        - >-
+          npx -p @ui5/cli@^3.0.0 ui5 build --dest dist
+          --include-task=generateManifestBundle
+          --include-task=generateCachebusterInfo
+        - mkdir dist-zip
+        - >-
+          bash -c "cd dist && npx bestzip
+          ../dist-zip/KnowledgeHourSessionKnowledgeHoursSessionListReadOnly.zip
+          *"
+      _artifactName: KnowledgeHourSessionKnowledgeHoursSessionListReadOnly.zip
+      supported-platforms: []
+      build-result: dist-zip
+  - name: KnowledgeHourSession-KnowledgeHourSession.KnowledgeHoursSessionRequest
+    type: html5
+    path: app/KnowledgeHourSession.KnowledgeHoursSessionRequest
+    build-parameters:
+      builder: custom
+      commands:
+        - rm -rf dist-zip dist
+        - >-
+          npx -p @ui5/cli@^3.0.0 ui5 build --dest dist
+          --include-task=generateManifestBundle
+          --include-task=generateCachebusterInfo
+        - mkdir dist-zip
+        - >-
+          bash -c "cd dist && npx bestzip
+          ../dist-zip/KnowledgeHourSessionKnowledgeHoursSessionRequest.zip *"
+      _artifactName: KnowledgeHourSessionKnowledgeHoursSessionRequest.zip
+      supported-platforms: []
+      build-result: dist-zip
+  - name: KnowledgeHourSession-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm
+      ignore:
+        - node_modules
+        - package-lock.json
+    requires:
+      - name: KnowledgeHourSession-service-uaa
+      - name: KnowledgeHourSession-service-db
+  - name: KnowledgeHourSession-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      memory: 256MB
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    build-parameters:
+      builder: npm
+      ignore:
+        - node_modules
+        - package-lock.json
+    requires:
+      - name: KnowledgeHourSession-service-uaa
+      - name: KnowledgeHourSession-service-db
+      - name: KnowledgeHourSession-service-destination
+      - name: KnowledgeHourSession-service-metadata
+      - name: KnowledgeHourSession-service-connectivity
+      - name: KnowledgeHourSession-service-logs
+  - name: KnowledgeHourSession-aux-destinations
+    type: com.sap.application.content
+    parameters:
+      content:
+        subaccount:
+          existing_destinations_policy: update
+          destinations:
+            - Authentication: OAuth2UserTokenExchange
+              Name: KnowledgeHourSession-service-uaa
+              ServiceInstanceName: KnowledgeHourSession-uaa
+              ServiceKeyName: KnowledgeHourSession-uaa-key
+              sap.cloud.service: lcap.KnowledgeHourSession
+            - Authentication: OAuth2UserTokenExchange
+              Name: KnowledgeHourSession-app-srv
+              TokenServiceInstanceName: KnowledgeHourSession-uaa
+              TokenServiceKeyName: KnowledgeHourSession-uaa-key
+              URL: ~{srv-api/srv-url}
+              sap.cloud.service: lcap.KnowledgeHourSession
+            - Name: KnowledgeHourSession-service-html5-apps-repo-host
+              ServiceInstanceName: KnowledgeHourSession-html5-apps-repo-host
+              ServiceKeyName: KnowledgeHourSession-html5-apps-repo-host-key
+              sap.cloud.service: lcap.KnowledgeHourSession
+    build-parameters:
+      no-source: true
+    requires:
+      - name: KnowledgeHourSession-service-uaa
+        parameters:
+          service-key:
+            name: KnowledgeHourSession-uaa-key
+      - name: srv-api
+      - name: KnowledgeHourSession-service-html5-apps-repo-host
+        parameters:
+          service-key:
+            name: KnowledgeHourSession-html5-apps-repo-host-key
+      - name: KnowledgeHourSession-service-destination
+        parameters:
+          content-target: true
+  - name: KnowledgeHourSession-launchpad
+    type: html5
+    path: build/launchpad
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - >-
+          npx -p @ui5/cli@^3.0.0 ui5 build --dest dist
+          --include-task=generateManifestBundle
+          --include-task=generateCachebusterInfo
+        - bash -c "cd dist && npx bestzip ../../../build/dist/launchpad.zip *"
+        - rm -rf dist
+      _artifactName: launchpad.zip
+      supported-platforms: []
+      build-result: ../../build/dist
+  - name: KnowledgeHourSession-aux-ui-deployer
+    type: com.sap.application.content
+    path: build/ui-deployer
+    build-parameters:
+      build-result: resources
+      requires:
+        - name: >-
+            KnowledgeHourSession-KnowledgeHourSession.KnowledgeHoursSessionListFullAccessAdmin
+          artifacts:
+            - KnowledgeHourSessionKnowledgeHoursSessionListFullAccessAdmin.zip
+          target-path: resources
+        - name: >-
+            KnowledgeHourSession-KnowledgeHourSession.KnowledgeHoursSessionListReadOnly
+          artifacts:
+            - KnowledgeHourSessionKnowledgeHoursSessionListReadOnly.zip
+          target-path: resources
+        - name: >-
+            KnowledgeHourSession-KnowledgeHourSession.KnowledgeHoursSessionRequest
+          artifacts:
+            - KnowledgeHourSessionKnowledgeHoursSessionRequest.zip
+          target-path: resources
+        - name: KnowledgeHourSession-launchpad
+          artifacts:
+            - launchpad.zip
+          target-path: resources
+    requires:
+      - name: KnowledgeHourSession-service-html5-apps-repo-host
+        parameters:
+          content-target: true
+resources:
+  - type: org.cloudfoundry.managed-service
+    name: KnowledgeHourSession-service-uaa
+    parameters:
+      service: xsuaa
+      service-plan: application
+      service-name: KnowledgeHourSession-uaa
+      path: xs-security.json
+      config:
+        xsappname: KnowledgeHourSession-${space}
+        role-collections:
+          - description: System Administrator
+            name: KnowledgeHourSession-SystemAdministrator-${space}
+            role-template-references:
+              - $XSAPPNAME.SystemAdministrator
+          - description: Trainer
+            name: KnowledgeHourSession-Trainer-${space}
+            role-template-references:
+              - $XSAPPNAME.Trainer
+  - type: org.cloudfoundry.managed-service
+    name: KnowledgeHourSession-service-db
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+      service-name: KnowledgeHourSession-db
+  - type: org.cloudfoundry.managed-service
+    name: KnowledgeHourSession-service-destination
+    parameters:
+      service: destination
+      service-plan: lite
+      service-name: KnowledgeHourSession-destination
+      config:
+        HTML5Runtime_enabled: true
+        version: 1.0.0
+  - type: org.cloudfoundry.user-provided-service
+    name: KnowledgeHourSession-service-metadata
+    parameters:
+      service: metadata
+      service-plan: standard
+      service-name: KnowledgeHourSession-metadata
+      config:
+        default-domain: ${default-domain}
+  - type: org.cloudfoundry.managed-service
+    name: KnowledgeHourSession-service-connectivity
+    parameters:
+      service: connectivity
+      service-plan: lite
+      service-name: KnowledgeHourSession-connectivity
+  - type: org.cloudfoundry.managed-service
+    name: KnowledgeHourSession-service-logs
+    parameters:
+      service: application-logs
+      service-plan: lite
+      service-name: KnowledgeHourSession-logs
+  - type: org.cloudfoundry.managed-service
+    name: KnowledgeHourSession-service-html5-apps-repo-host
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+      service-name: KnowledgeHourSession-html5-apps-repo-host

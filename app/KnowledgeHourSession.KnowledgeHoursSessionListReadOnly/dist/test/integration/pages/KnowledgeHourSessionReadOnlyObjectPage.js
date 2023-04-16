@@ -1,0 +1,2 @@
+sap.ui.define(["sap/fe/test/ObjectPage"],function(e){"use strict";var n={actions:{},assertions:{}};return new e({appId:"KnowledgeHourSession.KnowledgeHoursSessionListReadOnly",componentId:"KnowledgeHourSessionReadOnlyObjectPage",entitySet:"KnowledgeHourSessionReadOnly"},n)});
+//# sourceMappingURL=KnowledgeHourSessionReadOnlyObjectPage.js.map

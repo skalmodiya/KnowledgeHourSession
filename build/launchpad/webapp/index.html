@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title> Project Preview </title>
+    <title> Application Overview </title>
     <script src="shared-config.js"></script>
     <script src="https://ui5.sap.com/1.108.7/resources/sap-ui-core.js" 
             id="sap-ui-bootstrap"
@@ -28,7 +28,7 @@
                     return Controller.extend("PreviewController", {
                         onInit: function () {
 
-                            const data = {"Services":[{"ServiceName":"KnowledgeHourSessionService","DetailsURL":"./service/KnowledgeHourSession/","Metadata":"./service/KnowledgeHourSession/$metadata","Entities":[{"Name":"KnowledgeHourSessionReadOnly","URL":"./service/KnowledgeHourSession/KnowledgeHourSessionReadOnly","FioriURL":"$fiori-preview/KnowledgeHourSessionService/KnowledgeHourSessionReadOnly#preview-app"},{"Name":"KnowledgeHourSessionFullAccess","URL":"./service/KnowledgeHourSession/KnowledgeHourSessionFullAccess","FioriURL":"$fiori-preview/KnowledgeHourSessionService/KnowledgeHourSessionFullAccess#preview-app"},{"Name":"KnowledgeHourSessionCreateRequest","URL":"./service/KnowledgeHourSession/KnowledgeHourSessionCreateRequest","FioriURL":"$fiori-preview/KnowledgeHourSessionService/KnowledgeHourSessionCreateRequest#preview-app"}],"EntitiesCount":3}]}
+                            const data = {"Services":[{"ServiceName":"KnowledgeHourSessionService","DetailsURL":"./service/KnowledgeHourSession/","Metadata":"./service/KnowledgeHourSession/$metadata","Entities":[{"Name":"KnowledgeHourSessionReadOnly","URL":"./service/KnowledgeHourSession/KnowledgeHourSessionReadOnly","FioriURL":""},{"Name":"KnowledgeHourSessionFullAccess","URL":"./service/KnowledgeHourSession/KnowledgeHourSessionFullAccess","FioriURL":""},{"Name":"KnowledgeHourSessionCreateRequest","URL":"./service/KnowledgeHourSession/KnowledgeHourSessionCreateRequest","FioriURL":""}],"EntitiesCount":3}]}
                             this.getView().setModel(new JSONModel(data));
                         }
                     });

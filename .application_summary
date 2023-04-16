@@ -1,0 +1,5 @@
+{
+  "ProjectOverviewURL": "https://adb3ff71trial.launchpad.cfapps.us10.hana.ondemand.com/lcapKnowledgeHourSession.KnowledgeHourSessionLaunchpad-1.0.0",
+  "DeployedUTCTime": "2023-04-16T15:07:47.994Z",
+  "ApplicationLogURL": "https://logs.cf.us10-001.hana.ondemand.com/app/dashboards#/view/Overview?_g=(filters:!((query:(match_phrase:(component_name:KnowledgeHourSession-srv)))))"
+}

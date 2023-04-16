@@ -1,0 +1,2 @@
+sap.ui.define(["sap/fe/test/ObjectPage"],function(e){"use strict";var s={actions:{},assertions:{}};return new e({appId:"KnowledgeHourSession.KnowledgeHoursSessionListFullAccessAdmin",componentId:"KnowledgeHourSessionFullAccessObjectPage",entitySet:"KnowledgeHourSessionFullAccess"},s)});
+//# sourceMappingURL=KnowledgeHourSessionFullAccessObjectPage.js.map

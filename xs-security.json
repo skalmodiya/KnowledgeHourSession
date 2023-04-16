@@ -1,0 +1,33 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.SystemAdministrator",
+      "description": "SystemAdministrator"
+    },
+    {
+      "name": "$XSAPPNAME.Trainer",
+      "description": "Trainer"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "SystemAdministrator",
+      "description": "System Administrator",
+      "scope-references": [
+        "$XSAPPNAME.SystemAdministrator"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Trainer",
+      "description": "Trainer",
+      "scope-references": [
+        "$XSAPPNAME.Trainer"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "xsappname": "KnowledgeHourSession",
+  "tenant-mode": "dedicated"
+}
