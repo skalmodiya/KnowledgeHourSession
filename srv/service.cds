@@ -5,6 +5,12 @@ using KnowledgeHourSession from '../db/schema';
 @path : 'service/KnowledgeHourSession'
 service KnowledgeHourSessionService
 {
+
+    annotate KnowledgeHourSessionCreateRequest with @restrict :
+    [
+        { grant : [ '*' ], to : [ 'SystemAdministrator' ] },
+        { grant : [ '*' ], to : [ 'Trainer' ] }
+    ];
     annotate KnowledgeHourSessionCreateRequest with @requires :
     [
         'authenticated-user'
@@ -15,9 +21,20 @@ service KnowledgeHourSessionService
         'authenticated-user'
     ];
 
+    annotate KnowledgeHourSessionFullAccess with @restrict :
+    [
+        { grant : [ '*' ], to : [ 'SystemAdministrator' ] }
+    ];
+
     annotate KnowledgeHourSessionReadOnly with @requires :
     [
         'authenticated-user'
+    ];
+
+    annotate KnowledgeHourSessionReadOnly with @restrict :
+    [
+        { grant : [ '*' ], to : [ 'SystemAdministrator' ] },
+        { grant : [ 'READ' ], to : [ 'Trainer' ] }
     ];
 
     @readonly
@@ -37,5 +54,7 @@ service KnowledgeHourSessionService
 
 annotate KnowledgeHourSessionService with @requires :
 [
-    'authenticated-user'
+    'authenticated-user',
+    'SystemAdministrator',
+    'Trainer'
 ];

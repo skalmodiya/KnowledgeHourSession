@@ -1,5 +1,13 @@
 [
 	{
+		"Name": "any",
+		"Description": "any",
+		"defaultPrivilege": {
+			"IsSimple": true,
+			"SimplePrivilege": 2
+		}
+	},
+	{
 		"Name": "authenticated-user",
 		"Description": "authenticated-user",
 		"defaultPrivilege": {
@@ -16,11 +24,19 @@
 		}
 	},
 	{
-		"Name": "any",
-		"Description": "any",
+		"Name": "SystemAdministrator",
+		"Description": "System Administrator",
 		"defaultPrivilege": {
 			"IsSimple": true,
-			"SimplePrivilege": 2
+			"SimplePrivilege": 3
+		}
+	},
+	{
+		"Name": "Trainer",
+		"Description": "Trainer",
+		"defaultPrivilege": {
+			"IsSimple": true,
+			"SimplePrivilege": 3
 		}
 	}
 ]
